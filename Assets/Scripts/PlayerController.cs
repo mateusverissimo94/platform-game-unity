@@ -1,16 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    public float jumpForce = 5f;
+    public float jumpForce = 10f;
+
     private Rigidbody2D rb;
     private float moveInput;
     private Animator animator;
     private bool isRunning = false;
     private bool isJumping = false;
+
+    public int playerHealth = 100;
 
     void Start()
     {
@@ -18,6 +22,8 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         animator.SetBool("isRunning", false);
         animator.SetBool("isJumping", false);
+        animator.SetBool("inDamage", false);
+        Debug.Log($"Life do Player: {playerHealth}");
     }
 
     // Update is called once per frame
@@ -28,6 +34,7 @@ public class PlayerController : MonoBehaviour
         if (moveInput != 0)
         {
             isRunning = true;
+            animator.SetBool("isJumping", false);
         } else
         {
             isRunning= false;
@@ -72,5 +79,24 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             animator.SetBool("isJumping", true);
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        playerHealth -= damage;
+        animator.SetBool("inDamage", true);
+        Debug.Log($"Player tomou {damage} de dano. Saúde restante: {playerHealth}");
+        StartCoroutine(ResetDamageAnimation());
+        if (playerHealth <= 0)
+        {
+            Debug.Log("Player Morreu!");
+            SceneManager.LoadScene(1);
+        }
+    }
+
+    private IEnumerator ResetDamageAnimation()
+    {
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("inDamage", false);
     }
 }
