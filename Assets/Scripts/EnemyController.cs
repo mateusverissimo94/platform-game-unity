@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyController : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class EnemyController : MonoBehaviour
         currentTarget = wayPointA;
         scale = transform.localScale;
         Debug.Log($"life do inimigo: {enemyHealth}");
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -60,6 +62,12 @@ public class EnemyController : MonoBehaviour
         } else
         {
             Debug.LogWarning("PlayerController não encontrado no objeto com a tag ZoneAttack");
+        }
+
+        if (other.CompareTag("AttackZone"))
+        {
+            Debug.Log("Inimigo está sendo atacado");
+            enemyTakeDamage(10);
         }
     }
 
@@ -128,5 +136,42 @@ public class EnemyController : MonoBehaviour
         Vector3 flippedScale = scale;
         flippedScale.x *= -1;
         transform.localScale = flippedScale;
+    }
+
+    public void enemyTakeDamage(int damage)
+    {
+        enemyHealth -= damage;
+        animator.SetBool("inDamage", true);
+        Debug.Log($"Inimigo tomou {damage} de dano. Saúde restante: {enemyHealth}");
+        StartCoroutine(ResetDamageAnimation());
+        if (enemyHealth <= 0)
+        {
+            Debug.Log("Enemy Morreu!");
+            StartCoroutine(FadeOutAndDestroy());
+        }
+    }
+
+    private IEnumerator ResetDamageAnimation()
+    {
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("inDamage", false);
+    }
+
+    private IEnumerator FadeOutAndDestroy()
+    {
+        float startAlpha = spriteRenderer.color.a;
+        float rate = 1.0f / fadeDuration;
+        float progress = 0.0f;
+
+        while(progress < 1.0f)
+        {
+            Color tmpColor = spriteRenderer.color;
+            spriteRenderer.color = new Color(tmpColor.r, tmpColor.g, tmpColor.b, Mathf.Lerp(startAlpha, 0 , progress));
+            progress += rate * Time.deltaTime;
+
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 }
