@@ -175,13 +175,13 @@ AnimatorController:
   m_Name: PlayerController
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isRunning
+  - m_Name: isJumping
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: isJumping
+  - m_Name: isRunning
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -479,27 +479,27 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -3093100171399882466}
-    m_Position: {x: 340, y: 120, z: 0}
+    m_Position: {x: 350, y: -160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2448570805626147959}
-    m_Position: {x: 340, y: 310, z: 0}
+    m_Position: {x: 350, y: 30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4018920625789603321}
-    m_Position: {x: 660, y: 310, z: 0}
+    m_Position: {x: 670, y: 30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3678993760290124614}
-    m_Position: {x: 660, y: 120, z: 0}
+    m_Position: {x: 670, y: -160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7241608752010808645}
-    m_Position: {x: 160, y: 220, z: 0}
+    m_Position: {x: 170, y: -60, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -10, y: 40, z: 0}
-  m_EntryPosition: {x: -10, y: 120, z: 0}
-  m_ExitPosition: {x: -10, y: 200, z: 0}
+  m_AnyStatePosition: {x: 0, y: -240, z: 0}
+  m_EntryPosition: {x: 0, y: -160, z: 0}
+  m_ExitPosition: {x: 0, y: -80, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -3093100171399882466}
 --- !u!1102 &7241608752010808645
@@ -577,7 +577,7 @@ AnimatorStateTransition:
   serializedVersion: 3
   m_TransitionDuration: 0
   m_TransitionOffset: 0
-  m_ExitTime: 0.7
+  m_ExitTime: 0.20679837
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

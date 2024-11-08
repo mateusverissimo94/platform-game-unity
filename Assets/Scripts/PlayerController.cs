@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
@@ -13,8 +14,9 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private bool isRunning = false;
     private bool isJumping = false;
-
     public int playerHealth = 100;
+
+    public Slider lifeSlider;
 
     void Start()
     {
@@ -23,10 +25,9 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isRunning", false);
         animator.SetBool("isJumping", false);
         animator.SetBool("inDamage", false);
-        Debug.Log($"Life do Player: {playerHealth}");
+        Debug.Log("Life do Player: " + playerHealth);
     }
 
-    // Update is called once per frame
     void Update()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
@@ -35,10 +36,12 @@ public class PlayerController : MonoBehaviour
         {
             isRunning = true;
             animator.SetBool("isJumping", false);
-        } else
-        {
-            isRunning= false;
         }
+        else
+        {
+            isRunning = false;
+        }
+
         animator.SetBool("isRunning", isRunning);
 
         if (Input.GetKeyDown(KeyCode.Space) && !isJumping)
@@ -50,6 +53,8 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("Attack");
         }
+
+        lifeSlider.value = playerHealth * 0.01f;
     }
 
     void FixedUpdate()
@@ -59,26 +64,29 @@ public class PlayerController : MonoBehaviour
         if (moveInput > 0)
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
-        } else if(moveInput < 0)
+        }
+
+        else if (moveInput < 0)
         {
             transform.localScale = new Vector3(-1f, 1f, 1f);
         }
 
-        if (Mathf.Abs(rb.velocity.y) > 0.01f)
+        if (Mathf.Abs(rb.velocity.y) > 0.02f)
         {
             isJumping = true;
             animator.SetBool("isJumping", true);
-        } else
+        }
+        else
         {
             isJumping = false;
             animator.SetBool("isJumping", false);
         }
+
     }
 
     void Jump()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 0.1f);
-
         if (hit.collider != null)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
@@ -90,18 +98,20 @@ public class PlayerController : MonoBehaviour
     {
         playerHealth -= damage;
         animator.SetBool("inDamage", true);
-        Debug.Log($"Player tomou {damage} de dano. Saúde restante: {playerHealth}");
+        Debug.Log("Player tomou " + damage + " de dano. Saúde restante: " + playerHealth);
+
         StartCoroutine(ResetDamageAnimation());
+
         if (playerHealth <= 0)
         {
             Debug.Log("Player Morreu!");
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         }
     }
 
     private IEnumerator ResetDamageAnimation()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1F);
         animator.SetBool("inDamage", false);
     }
 }
