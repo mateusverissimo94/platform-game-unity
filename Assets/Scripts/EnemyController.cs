@@ -59,7 +59,8 @@ public class EnemyController : MonoBehaviour
             {
                 attackCoroutine = StartCoroutine(AttackPlayer(player));
             }
-        } else
+        }
+        else
         {
             Debug.LogWarning("PlayerController não encontrado no objeto com a tag ZoneAttack");
         }
@@ -73,14 +74,11 @@ public class EnemyController : MonoBehaviour
 
     private IEnumerator AttackPlayer(PlayerController player)
     {
-        while (true)
-        {
-            player.TakeDamage(10);//Valor pode ser alterado conforme sua necessidade
-            animator.SetTrigger("Attack");
-            Debug.Log("Inimigo atacando...");
 
-            yield return new WaitForSeconds(attackInterval);
-        }
+        player.TakeDamage(10);//Valor pode ser alterado conforme sua necessidade
+        animator.SetTrigger("Attack");
+        Debug.Log("Inimigo atacando...");
+        yield return new WaitForSeconds(attackInterval);
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -124,7 +122,8 @@ public class EnemyController : MonoBehaviour
         {
             currentTarget = wayPointB;
             Flip();
-        } else
+        }
+        else
         {
             currentTarget = wayPointA;
             transform.localScale = scale;
@@ -163,10 +162,10 @@ public class EnemyController : MonoBehaviour
         float rate = 1.0f / fadeDuration;
         float progress = 0.0f;
 
-        while(progress < 1.0f)
+        while (progress < 1.0f)
         {
             Color tmpColor = spriteRenderer.color;
-            spriteRenderer.color = new Color(tmpColor.r, tmpColor.g, tmpColor.b, Mathf.Lerp(startAlpha, 0 , progress));
+            spriteRenderer.color = new Color(tmpColor.r, tmpColor.g, tmpColor.b, Mathf.Lerp(startAlpha, 0, progress));
             progress += rate * Time.deltaTime;
 
             yield return null;

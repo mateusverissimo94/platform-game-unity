@@ -57,6 +57,24 @@ public class PlayerController : MonoBehaviour
         lifeSlider.value = playerHealth * 0.01f;
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("PowerUp"))
+        {
+            Debug.Log("PowerUp");
+            {
+                Debug.Log("Player apanhou power up");
+                if (playerHealth < 100)
+                {
+                    playerHealth += 10;
+                } else
+                {
+                    Debug.Log("Você já tem o número máximo de Health");
+                }
+            }
+        }
+    }
+
     void FixedUpdate()
     {
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
